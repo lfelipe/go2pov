@@ -27,6 +27,8 @@ clean:
 tidy:
 	cd src &&  $(MAKE) tidy
 	rm -f *~ $(TARGET) mtrace.log
+	rm -f *.pov
+	rm -f -r docs/autodoc.html
 
 archive: tidy
 	@find $(ARCHIVE) -not -type d | sed s:^:$(DIRNAME)/: >MANIFEST

@@ -69,3 +69,11 @@ void GoBoard::print(FILE *_fp)
       fprintf(_fp,"\n");
     }
 }
+
+
+Stone GoBoard::get(int _x, int _y)
+{
+  if (_x<0 || _x>=m_size || _y<0 || _y>=m_size)
+    return empty;
+  return m_board[_x][_y];
+}

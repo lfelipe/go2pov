@@ -5,17 +5,17 @@ TARGET  = go2pov
 CC      = gcc
 
 OBJECTS =	gameinfo.o gamenode.o\
-		gametree.o\
+		gametree.o consoleviewer.o\
 		goboard.o gofile.o\
 		main.o parser.o\
 		povwriter.o\
 		sgfparser.o
 
 SOURCES =	boardwriter.h\
-		gameinfo.h gameinfo.cpp\
+		consoleviewer.h consoleviewer.cpp\
 		gameinfo.h gameinfo.cpp\
 		gametree.h gametree.cpp\
-		gamewriter.h\
+		gameviewer.h gamewriter.h\
 		goboard.h goboard.cpp\
 		gofile.h gofile.cpp\
 		goparser.h\
@@ -51,3 +51,9 @@ clean:
 
 tidy:
 	rm -f $(OBJECTS) $(TARGET) *~ core mtrace.log
+	rm -f *.pov
+
+test: $(TARGET)
+	go2pov ../samples/kitani.sgf
+	x-povray -Itest.pov -geometry 320x240
+	ee test.png

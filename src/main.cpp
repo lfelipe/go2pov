@@ -18,6 +18,7 @@ int main(int _argc, char *_argv[])
   GoFile    *file=NULL;
   PovWriter  writer;
   GoBoard    board;
+  int        i;
 
   if (_argc < 2)
     {
@@ -32,7 +33,25 @@ int main(int _argc, char *_argv[])
 
   // test the board
   board.setSize(19);
-  board.addStone(black,1,1);
+  /*
+  for (i=0; i<19; i++)
+    {
+      if (i%2)
+	{
+	  board.addStone(white,i,i);
+	  board.addStone(white,i,18-i);
+	  board.addStone(white,i,0);
+	}
+      else
+	{
+	  board.addStone(black,i,i);
+	  board.addStone(black,i,18-i);
+	  board.addStone(black,0,i);
+	}
+	}*/
+  board.addStone(black,3,1);
+  board.addStone(black,3,2);
+  board.addStone(white,2,2);
   board.print(stdout);
 
   // test the board-writer

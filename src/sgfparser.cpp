@@ -232,8 +232,149 @@ int SGFParser::parseProperty(char **_p1, char *_pe, char *_id, GameNode *_n)
   memcpy(p3,p2, p1-p2);
   p3[p1-p2]=0;
   fprintf(stderr, "%s\n", p3);
+  evalProperty(_n, _id, p3);
   free(p3);
 
   *_p1=p1;
   return 1;
+}
+
+int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
+{
+  switch (_id[0])
+    {
+    case 'A':
+      switch (_id[1])
+	{
+	case 'B':
+	  fprintf(stderr, "Add black -> %s\n", _s);
+	  return 1;
+	case 'E':
+	  fprintf(stderr, "Remove Stones -> %s\n", _s);
+	  return 1;
+	case 'W':
+	  fprintf(stderr, "Add white -> %s\n", _s);
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'B':
+      switch (_id[1])
+	{
+	case 0:
+	  fprintf(stderr, "Black move -> %s\n", _s);
+	  return 1;
+	case 'M':
+	  fprintf(stderr, "Bad move\n");
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'C':
+      switch (_id[1])
+	{
+	case 0:
+	  fprintf(stderr, "Comment -> %s\n", _s);
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'D':
+      switch(_id[1])
+	{
+	case 'O':
+	  fprintf(stderr, "Doubtful move\n");
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'G':
+      switch(_id[1])
+	{
+	case 'B':
+	  fprintf(stderr, "Good black move\n");
+	  return 1;
+	case 'M':
+	  fprintf(stderr, "Game : %s\n", _s);
+	  return 1;
+	case 'W':
+	  fprintf(stderr, "Good white move\n");
+	  return 1;	  
+	default:
+	  return 0;
+	}
+    case 'H':
+      switch (_id[1])
+	{
+	case 'O':
+	  fprintf(stderr, "HotSpot !\n");
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'I':
+      switch (_id[1])
+	{
+	case 'T':
+	  fprintf(stderr, "Interesting\n");
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'N':
+      switch(_id[1])
+	{
+	case 0:
+	  fprintf(stderr, "Nodename -> %s\n", _s);
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'S':
+      switch(_id[1])
+	{
+	case 'Z':
+	  fprintf(stderr, "Size : %s\n", _s);
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'T':
+      switch(_id[1])
+	{
+	case 'E':
+	  fprintf(stderr, "Tesuji\n");
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'U':
+      switch(_id[1])
+	{
+	case 'C':
+	  fprintf(stderr, "Unclear !\n");
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'V':
+      switch(_id[1])
+	{
+	case 0:
+	  fprintf(stderr, "Value -> %s\n", _s);
+	  return 1;
+	default:
+	  return 0;
+	}
+    case 'W':
+      switch(_id[1])
+	{
+	case 0:
+	  fprintf(stderr, "White move -> %s\n", _s);
+	  return 1;
+	}
+    default:
+      return 0;
+  }
+  return 0;
 }

@@ -9,6 +9,8 @@ class GameNode
 
   char *comment;
   int   x,y;
+
+  
   int   timeb, timew;
 };
 
