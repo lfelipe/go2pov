@@ -5,17 +5,23 @@ TARGET  = go2pov
 CC      = gcc
 
 OBJECTS =	gameinfo.o gamenode.o\
-		gametree.o gofile.o\
+		gametree.o\
+		goboard.o gofile.o\
 		main.o parser.o\
+		povwriter.o\
 		sgfparser.o
 
-SOURCES =	gameinfo.h gameinfo.cpp\
+SOURCES =	boardwriter.h\
+		gameinfo.h gameinfo.cpp\
 		gameinfo.h gameinfo.cpp\
 		gametree.h gametree.cpp\
+		gamewriter.h\
+		goboard.h goboard.cpp\
 		gofile.h gofile.cpp\
 		goparser.h\
 		main.cpp\
 		parser.h parser.cpp\
+		povwriter.h povwriter.cpp\
 		sgfparser.h sgfparser.cpp
 
 CFLAGS  = -Wall -pedantic
