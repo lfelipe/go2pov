@@ -60,7 +60,38 @@ int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer)
 	  if (strcmp("move",prop->getName())==0)
 	    {
 	      c=((PropMove *)prop)->get(&x, &y);
-	      board.addStone(c,x,y);
+	      if (x<0 || y<0 || x>=board.getSize() || y>=board.getSize())
+		{
+		  fprintf(stderr, "Pass !\n");
+		} else {
+		  board.addStone(c,x,y);
+		  if (board.get(x-1,y)!=c && board.getLiberties(x-1,y)==0)
+		    {
+		      fprintf(stderr, "killing at %i,%i\n", x-1,y);
+		      board.removeGroup(x-1,y);
+		    }
+		  if (board.get(x+1,y)!=c && board.getLiberties(x+1,y)==0)
+		    {
+		      fprintf(stderr, "killing at %i,%i\n", x+1,y);
+		      board.removeGroup(x+1,y);
+		    }
+		  if (board.get(x,y-1)!=c && board.getLiberties(x,y-1)==0)
+		    {
+		      fprintf(stderr, "killing at %i,%i\n", x,y-1);
+		      board.removeGroup(x,y-1);
+		    }
+		  if (board.get(x,y+1)!=c && board.getLiberties(x,y+1)==0)
+		    {
+		      fprintf(stderr, "killing at %i,%i\n", x,y+1);
+		      board.removeGroup(x,y+1);
+		    }
+		  // assume suicide if no liberties
+		  if (board.getLiberties(x,y)==0)
+		    {
+		      fprintf(stderr, "suicide at %i,%i\n", x,y);
+		      board.removeGroup(x,y);
+		    }
+		}
 	    }
 	  if (strcmp("comment",prop->getName())==0)
 	    {

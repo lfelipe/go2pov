@@ -35,8 +35,14 @@ int main(int _argc, char *_argv[])
   printf("%i game(s) loaded from file\n", file->getNumberGames());
   delete parser;
 
+
+  // parsed a game ?
   if (file->getNumberGames())
-    viewer.viewGame(file->getGame(0), &writer);
+    {
+      writer.setFilename("board");
+      writer.setExtension("inc");
+      viewer.viewGame(file->getGame(0), &writer);
+    }
 
   delete file;
   return 0;

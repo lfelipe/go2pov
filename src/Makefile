@@ -63,9 +63,9 @@ clean:
 
 tidy:
 	rm -f $(OBJECTS) $(TARGET) *~ core mtrace.log
-	rm -f *.pov *.png
+	rm -f *.png
 
 test: $(TARGET)
 	./$(TARGET) ../samples/kitani.sgf
-	x-povray -Igoboard.pov +W800 +H640 +A0.3
-	ee goboard.png
+	x-povray -Isample.pov +W640 +H480 -A0.3
+	ee sample.png

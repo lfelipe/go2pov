@@ -8,7 +8,7 @@ PovWriter::PovWriter()
   m_filename=strdup("goboard");
   m_extension=strdup("pov");
 
-  m_thickness  =0.003;
+  m_thickness  =0.004;
   m_boardheight=0.1;
 }
 
@@ -30,9 +30,9 @@ int PovWriter::writeBoard(GoBoard *_board)
 {
   FILE   *fp;
   char   *n;
-  double  b_border=0.1;
-  double  width=2.0 - b_border*2 , s_step=width/((double)_board->getSize()-1), s_space=0.01, s_size=(s_step-s_space);
-  double  s_off=- (width/2.0 - s_space), s_height=(s_size/2.0) * 0.6666 ;
+  double  b_border=0.02;
+  double  width=2.0 - b_border*2 , s_step=width/((double)_board->getSize()+1), s_space=0.01, s_size=(s_step-s_space);
+  double  s_off=- (width/2.0 - s_step), s_height=(s_size/2.0) * 0.6666 ;
   int     i,j;
   Stone   color;
 
@@ -56,18 +56,25 @@ int PovWriter::writeBoard(GoBoard *_board)
   fprintf(fp, "\n");
   //fprintf(fp, "object {stone translate 1*y}\n");
 
-  fprintf(fp, "#declare bs = object { stone pigment {color rgb<0,0,0>} scale <ssize, ssize, ssize> finish {phong 0.2 phong_size 0.8} }\n");
-  fprintf(fp, "#declare ws = object { stone pigment {color rgb<1,1,1>} scale <ssize, ssize, ssize> finish {phong 1 phong_size 150} }\n");
-  
-  fprintf(fp, "#declare hline = object { box{<-%f,0,-th> <+%f,bh,+th>} }\n",
-	  width/2, width/2);
-  fprintf(fp, "#declare vline = object { box{<-th,0,-%f> <+th,bh,+%f>} }\n",
-	  width/2, width/2);
-  fprintf(fp, "#declare hoshi = object { cylinder{<0,0,0><0,bh,0> th*5} }");
+  fprintf(fp, "#declare woodpigment = pigment{wood color_map{[0.00 color rgb <1.0, 0.8, 0.5>] [0.99 color rgb <0.9, 0.8, 0.5>]} turbulence 0.3 scale 0.1\n}\n");
+  fprintf(fp, "#declare blackpigment = pigment{color rgb<0,0,0>}\n");
+  fprintf(fp, "#declare blackfinish = finish{phong 0.2 phong_size 0.8}\n");
+  fprintf(fp, "#declare whitepigment = pigment{color rgb<1,1,1>}\n");
+  fprintf(fp, "#declare whitefinish = finish{phong 1 phong_size 150}\n");
+
+  fprintf(fp, "\n");
+  fprintf(fp, "#declare bs = object { stone pigment {blackpigment} scale <ssize, ssize, ssize> finish {blackfinish} }\n");
+  fprintf(fp, "#declare ws = object { stone pigment {whitepigment} scale <ssize, ssize, ssize> finish {whitefinish} }\n");
+  fprintf(fp, "#declare hline = object { box{<-%f,0,-th/2> <+%f,bh,+th/2>} }\n",
+	  s_off, s_off);
+  fprintf(fp, "#declare vline = object { box{<-th/2,0,-%f> <+th/2,bh,+%f>} }\n",
+	  s_off, s_off);
+
+  fprintf(fp, "#declare hoshi = object { cylinder{<0,0,0><0,bh,0> th*3} }");
   fprintf(fp,"\n");
 
   fprintf(fp, "#declare hoshis = union {\n");
-  if (_board->getSize() >= 19)
+  if (_board->getSize() == 19)
     {
       fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*- 3-s_off, s_step* 3+s_off);
       fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*- 9-s_off, s_step* 3+s_off);
@@ -110,19 +117,18 @@ int PovWriter::writeBoard(GoBoard *_board)
   fprintf(fp, "\n");
   fprintf(fp, "#declare woodboard=object {\n difference {\n");
   fprintf(fp, "object{box{<-1,-bh,-1> <1,bh,1>}} object{grid scale<1,1.01,1>} }\n");
-  fprintf(fp, "pigment{wood color_map{[0.00 color rgb <1.0, 0.8, 0.5>] [0.99 color rgb <0.9, 0.8, 0.5>]}\n");
-  fprintf(fp, "turbulence 0.3 scale 0.1}\n}\n");
+  fprintf(fp, "pigment{woodpigment}\n");
+  fprintf(fp, "}\n");
   fprintf(fp, "\n");
-  fprintf(fp, "#declare board = union { object{woodboard} object{grid} }\n");
+  fprintf(fp, "#declare board = union { object{woodboard} object{grid} object{stones}}\n");
 
-
-  fprintf(fp, "object { stones}\n");
+  /*
   fprintf(fp, "object { board}\n");
   fprintf(fp, "\n");
-  //fprintf(fp, "camera { location <1,2,1> look_at <0,-bh,0>}\n");
-  fprintf(fp, "camera { location <0,2,.5> look_at <0,0,0>}\n");
+  fprintf(fp, "camera { location <4,3,.5> look_at <0,0,0>}\n");
   fprintf(fp, "light_source {<2,5,2> color rgb <1,1,1>}\n");
   fprintf(fp, "background { color rgb <0.2, 0.2, 0.3> }\n");
+  */
   fclose(fp);
   return 1;
 }
