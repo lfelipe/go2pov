@@ -2,13 +2,15 @@
 # Makefile in the src-directory
 #
 TARGET  = go2pov
-CC      = gcc
+CC      = g++
 
 OBJECTS =	gameinfo.o gamenode.o\
 		gametree.o consoleviewer.o\
 		goboard.o gofile.o\
 		main.o parser.o\
 		povwriter.o\
+		propadd.o\
+		propcomment.o propmove.o\
 		sgfparser.o
 
 SOURCES =	boardwriter.h\
@@ -20,8 +22,12 @@ SOURCES =	boardwriter.h\
 		gofile.h gofile.cpp\
 		goparser.h\
 		main.cpp\
+		nodeproperty.h\
 		parser.h parser.cpp\
 		povwriter.h povwriter.cpp\
+		propadd.h propadd.cpp\
+		propcomment.h propcomment.cpp\
+		propmove.h propmove.cpp\
 		sgfparser.h sgfparser.cpp
 
 CFLAGS  = -Wall -pedantic
@@ -36,15 +42,16 @@ LIBS    =
 DO_CC   = $(CC) $(CFLAGS) $(HP_DEBUG) $(DEFINES) $(INCLUDE) -o $@ -c $< 
 
 
+# PHONY: .cpp
 .cpp.o:
+	$(DO_CC)
+.c.o:
 	$(DO_CC)
 
 all: $(TARGET) $(SOURCES)
 $(TARGET): $(OBJECTS) $(SOURCES)
 	$(CC) -Wall $(OBJECTS) -o $(TARGET) $(CFLAGS) $(LIBS)
 	cp $(TARGET) ..
-#	cp VERSION ../docs
-#	cp TODO ../docs
 
 clean:
 	rm -f $(TARGET) $(OBJECTS) mtrace.log
