@@ -4,7 +4,7 @@ Version
 Prog: go2pov
 home: http://go2pov.sourceforge.net
 auth: Jacobs, Hans-Peter <weasel75@sourceforge.net>
-date: march 2001
+date: $Date: 2001/03/20 16:23:44 $
 
 The newest version is always available at SourceForge. There you
 can find the latest tarball and the CVS.
@@ -14,3 +14,11 @@ and please describe short the problem, your OS, etc...
 
 MAIL ME  ----> weasel75@sourceforge.net
 HOMEPAGE ----> http://go2pov.sourceforge.net
+
+Version 0.1
+***********
+This is the first public release. For now it just reads (poorly) a SGF-file.
+The game can be viewed on the console. Pressing <return> will make one
+move in the game, "q" will exit and "s" will save the board.
+After saving and quit run pov on the newly created "goboard.pov".
+

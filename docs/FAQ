@@ -4,7 +4,7 @@ Frequently Asked Questions
 Prog: go2pov
 home: http://go2pov.sourceforge.net
 auth: Jacobs, Hans-Peter <weasel75@sourceforge.net>
-date: $Date: 2001/03/14 11:20:13 $
+date: $Date: 2001/03/20 16:23:44 $
 
 Contents
 ********
@@ -12,7 +12,11 @@ Contents
 1. What is it good for ?
 2. What is it not good for ?
 3. What do I need to run the program ?
+4. Where do I find SGF-files ?
+5. What do all this files do ?
 
+Q & A
+*****
 Q: 1. What is this program good for ?
 A: The program will help you to make POV-files out of your Go-games. This
 POV-files can be raytraced directly or you can use them in your POV-projects.
@@ -27,3 +31,25 @@ Q: 3. What do I need to run the program ?
 A: In the moment the program is console-based so you need just a terminal
 or a MS-DOS-Box. To raytrace the resulting files, you need POV
 (http://www.povray.org)
+
+
+Q: 4. Where can I find a so-called "SGF"-file ?
+A: SGF stands for Simple Game Format (at least I hope so :) ).
+Files can be found on all the go-related pages. Jan van der Steen
+http://www.cwi.nl/~jansteen/go/go.html
+has a very nice site with some (over 1.000) games. There you can find
+older games, games between the Pro-Dans, etc....
+A nice source is IGS. If you play there, be sure to set "automail" to "on", so
+after the match you will find a nice SGF-file in your postboxes :)
+
+Q: 5. What do all this files do ?
+A: go2pov will create 3 files:
+gotexture.inc, goboard.inc, sample.pov
+The texture-file will just be created if it does not exist already.
+That way you can define your very own textures for the board, the stones and
+the grid.
+The sample.pov just renders a simple scene with board and stones and nothing
+more.
+More advanced Pov-hackers will include the board from "goboard.inc" into
+their own pov-scenes. The board stretches: -1<=x<=1, -1<=z<=1, -0.1<y<0.1
+

@@ -4,7 +4,7 @@ HOWTO - file
 Prog: go2pov
 home: http://go2pov.sourceforge.net
 auth: Jacobs, Hans-Peter <weasel75@sourceforge.net>
-date: $Date: 2001/03/14 11:20:16 $
+date: $Date: 2001/03/20 16:23:44 $
 
 
 Greetings !!
@@ -15,3 +15,23 @@ English is not my native language, so please forgive me any mistakes.
 
 Contents
 ********
+
+1. What do I need ?
+2. How do I run the thing ?
+
+Q & A
+*****
+
+1. What do I need ?
+"go2-pov"-executable, povray (http://www.povray.org) and a sgf-file
+
+
+2. How do I run the thing ?
+The "go2pov" is not very complicated (for console-hackers at least).
+ a) find the go2pov-executable and find a nice sgf-file
+ b) run "go2pov <filename>"
+ c) step thru the game by pressing return
+ d) enter "s" + return to save the current board-position
+ e) run POV (e.g.: "x-povray -I sample.pov +W640 +H480 +A0.3")
+ f) view the resulting image ("sample.png")
+
