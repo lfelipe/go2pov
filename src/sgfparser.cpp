@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sgfparser.h"
-
+#include "propcomment.h"
+#include "propintvalue.h"
+#include "propmove.h"
+#include "propstring.h"
 
 SGFParser::SGFParser()
 {
@@ -54,7 +57,6 @@ GoFile *SGFParser::parseFile(char *_filename)
 {
   FILE     *fp;
   GoFile   *file=new GoFile();
-  GameTree *tree=NULL;
   long int  length;
   char      *m1, *p1, *pe, done;
 
@@ -79,14 +81,14 @@ GoFile *SGFParser::parseFile(char *_filename)
   while(!done)
     {
       m_info=new GameInfo();
-      tree=GameTree::New();
-      tree=parseTree(&p1, pe);
-      if (tree==NULL)
+      root=GameTree::New();
+      root=parseTree(&p1, pe);
+      if (root==NULL)
 	{
 	  delete m_info;
 	  done=1;
 	} else {
-	  file->addGame(tree, m_info);
+	  file->addGame(root);
 	  fprintf(stderr,"GameTree added\n");
 	}
     }  
@@ -116,7 +118,7 @@ GameTree *SGFParser::parseTree(char **_p1, char *_pe)
   fprintf(stderr, "Tree opened '%c'\n", a);
   tree=GameTree::New();
   done=0;
-  while(!done)
+  while(!done && p1!=_pe)
     {
       p2=p1;
       a=getNextChar(&p1, _pe);
@@ -148,6 +150,7 @@ GameTree *SGFParser::parseTree(char **_p1, char *_pe)
 	  break;
 	case ')':
 	  fprintf(stderr, "Tree closed\n");
+	  done=1;
 	  break;
 	case '\0':
 	  done=1;
@@ -162,16 +165,16 @@ GameTree *SGFParser::parseTree(char **_p1, char *_pe)
 
 GameNode *SGFParser::parseNode(char **_p1, char *_pe)
 {
-  GameNode *n;//=new GameNode();
+  GameNode *n=new GameNode();
   char a,*p1, *p2, done, pi[3], nof_pi=0;
 
-  fprintf(stderr, "  Parsing Node\n");
+  //  fprintf(stderr, "  Parsing Node\n");
   p1=*_p1;
   done=0;
   pi[0]=0;
   pi[1]=0;
   pi[2]=0;
-  while(!done)
+  while(!done && p1!=_pe)
     {
       p2=p1;
       a=getNextChar(&p1, _pe);
@@ -181,7 +184,7 @@ GameNode *SGFParser::parseNode(char **_p1, char *_pe)
 	case '(':
 	case ';':
 	  p1=p2;
-	  fprintf(stderr, "    breaking -> found '%c'\n", a);
+	  //fprintf(stderr, "    breaking -> found '%c'\n", a);
 	  done=1;
 	  break;
 	case '[':
@@ -199,7 +202,7 @@ GameNode *SGFParser::parseNode(char **_p1, char *_pe)
 	}
     }
   *_p1=p1;
-  return NULL;
+  return n;
 }
 
 
@@ -209,7 +212,7 @@ int SGFParser::parseProperty(char **_p1, char *_pe, char *_id, GameNode *_n)
 
   p1=*_p1;
   p2=p1;
-  fprintf(stderr, "      parsing PropID: %s -> ", _id);
+  //fprintf(stderr, "      parsing PropID: %s -> ", _id);
 
   untouched=1;
   opened=0;
@@ -231,7 +234,7 @@ int SGFParser::parseProperty(char **_p1, char *_pe, char *_id, GameNode *_n)
   p3=(char *)malloc(p1-p2+1);
   memcpy(p3,p2, p1-p2);
   p3[p1-p2]=0;
-  fprintf(stderr, "%s\n", p3);
+  //fprintf(stderr, "%s\n", p3);
   evalProperty(_n, _id, p3);
   free(p3);
 
@@ -241,6 +244,12 @@ int SGFParser::parseProperty(char **_p1, char *_pe, char *_id, GameNode *_n)
 
 int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
 {
+  PropComment  *pc;
+  PropIntValue *pi;
+  PropMove     *pm;
+  PropString   *ps;
+  int           x,y;
+
   switch (_id[0])
     {
     case 'A':
@@ -263,6 +272,25 @@ int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
 	{
 	case 0:
 	  fprintf(stderr, "Black move -> %s\n", _s);
+	  pm=new PropMove();
+	  // check for a pass of the player
+	  if (_s[1]==']')
+	    {
+	      x=root->size;
+	      y=root->size;
+	    } else {
+	      if (_s[1] <= 'Z' && _s[1]>='A')
+		x=_s[1]-'A' + 26;
+	      else
+		x=_s[1]-'a';
+
+	      if (_s[2] <= 'Z' && _s[2]>='A')
+		y=_s[2]-'A' + 26;
+	      else
+		y=_s[2]-'a';
+	    }
+	  pm->set(black, x,y);
+	  _n->addProperty(pm);
 	  return 1;
 	case 'M':
 	  fprintf(stderr, "Bad move\n");
@@ -274,7 +302,11 @@ int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
       switch (_id[1])
 	{
 	case 0:
-	  fprintf(stderr, "Comment -> %s\n", _s);
+	  //fprintf(stderr, "Comment -> %s\n", _s);
+	  ps=new PropString;
+	  ps->setName("comment");
+	  ps->set(_s);
+	  _n->addProperty(ps);
 	  return 1;
 	default:
 	  return 0;
@@ -326,6 +358,10 @@ int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
 	{
 	case 0:
 	  fprintf(stderr, "Nodename -> %s\n", _s);
+	  ps=new PropString;
+	  ps->setName("nodename");
+	  ps->set(_s);
+	  _n->addProperty(ps);
 	  return 1;
 	default:
 	  return 0;
@@ -335,6 +371,11 @@ int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
 	{
 	case 'Z':
 	  fprintf(stderr, "Size : %s\n", _s);
+	  sscanf(_s, "[%i]", &x);
+	  pi=new PropIntValue();
+	  pi->setName("boardsize");
+	  pi->setValue(x);
+	  _n->addProperty(pi);
 	  return 1;
 	default:
 	  return 0;
@@ -371,6 +412,25 @@ int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
 	{
 	case 0:
 	  fprintf(stderr, "White move -> %s\n", _s);
+	  pm=new PropMove();
+	  // check for a pass of the player
+	  if (_s[1]==']')
+	    {
+	      x=root->size;
+	      y=root->size;
+	    } else {
+	      if (_s[1] <= 'Z' && _s[1]>='A')
+		x=_s[1]-'A' + 26;
+	      else
+		x=_s[1]-'a';
+
+	      if (_s[2] <= 'Z' && _s[2]>='A')
+		y=_s[2]-'A' + 26;
+	      else
+		y=_s[2]-'a';
+	    }
+	  pm->set(white, x,y);
+	  _n->addProperty(pm);
 	  return 1;
 	}
     default:

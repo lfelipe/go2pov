@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <string.h>
 #include "propcomment.h"
 
 PropComment::PropComment()
@@ -6,24 +8,24 @@ PropComment::PropComment()
   m_ret=NULL;
 }
 
-PropMove::~PropMove()
+PropComment::~PropComment()
 {
   free(m_string);
   free(m_ret);
 }
 
 
-int PropMove::set(char *_s)
+int PropComment::set(char *_s)
 {
   free(m_string);
   m_string=strdup(_s);
   return 1;
 }
 
-const char *PropMove::getString()
+const char *PropComment::getAsString()
 {
   free(m_ret);
-  m_ret=(char *)malloc(strlen("comment:") + strlen(m_string) + 1);
+  m_ret=(char *)malloc(strlen("comment:") + strlen(m_string) + 2);
   strcpy(m_ret, "comment:");
   strcat(m_ret, m_string);
   return (const char *)m_ret;

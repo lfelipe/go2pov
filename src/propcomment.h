@@ -2,11 +2,13 @@
 #define __PROP_COMMENT_H__
 
 #include "goboard.h"
+#include "nodeproperty.h"
 
 class PropComment : public NodeProperty
 {
  public:
   PropComment();
+  ~PropComment();
 
   const char *getName() {return "comment";}
   const char *getAsString();

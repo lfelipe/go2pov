@@ -10,7 +10,10 @@ OBJECTS =	gameinfo.o gamenode.o\
 		main.o parser.o\
 		povwriter.o\
 		propadd.o\
-		propcomment.o propmove.o\
+		propcomment.o\
+		propintvalue.o\
+		propmove.o\
+		propstring.o\
 		sgfparser.o
 
 SOURCES =	boardwriter.h\
@@ -27,7 +30,9 @@ SOURCES =	boardwriter.h\
 		povwriter.h povwriter.cpp\
 		propadd.h propadd.cpp\
 		propcomment.h propcomment.cpp\
+		propintvalue.h propintvalue.cpp\
 		propmove.h propmove.cpp\
+		propstring.h propstring.cpp\
 		sgfparser.h sgfparser.cpp
 
 CFLAGS  = -Wall -pedantic
@@ -58,9 +63,9 @@ clean:
 
 tidy:
 	rm -f $(OBJECTS) $(TARGET) *~ core mtrace.log
-	rm -f *.pov
+	rm -f *.pov *.png
 
 test: $(TARGET)
-	go2pov ../samples/kitani.sgf
-	x-povray -Itest.pov -geometry 320x240
-	ee test.png
+	./$(TARGET) ../samples/kitani.sgf
+	x-povray -Igoboard.pov +W800 +H640 +A0.3
+	ee goboard.png

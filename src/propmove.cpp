@@ -11,7 +11,7 @@ PropMove::~PropMove()
 }
 
 
-int PropMove::set(Color _color, int _x, int _y)
+int PropMove::set(Stone _color, int _x, int _y)
 {
   m_color=_color;
   x=_x;

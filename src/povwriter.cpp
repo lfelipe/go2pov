@@ -5,12 +5,19 @@
 PovWriter::PovWriter()
 {
   m_name=strdup("povwriter");
+  m_filename=strdup("goboard");
   m_extension=strdup("pov");
 
-  m_thickness  =0.002;
+  m_thickness  =0.003;
   m_boardheight=0.1;
 }
 
+
+void PovWriter::setFilename(char *_filename)
+{
+  free(m_filename);
+  m_filename=strdup(_filename);
+}
 
 void PovWriter::setExtension(char *_extension)
 {
@@ -19,7 +26,7 @@ void PovWriter::setExtension(char *_extension)
 }
 
 
-int PovWriter::writeBoard(GoBoard *_board, char *_filename)
+int PovWriter::writeBoard(GoBoard *_board)
 {
   FILE   *fp;
   char   *n;
@@ -29,8 +36,8 @@ int PovWriter::writeBoard(GoBoard *_board, char *_filename)
   int     i,j;
   Stone   color;
 
-  n=(char *)malloc(strlen(_filename) + strlen(m_extension) + 2);
-  sprintf(n,"%s.%s", _filename,m_extension);
+  n=(char *)malloc(strlen(m_filename) + strlen(m_extension) + 2);
+  sprintf(n,"%s.%s", m_filename,m_extension);
 
   fp=fopen(n, "wt");
   if (fp==NULL)
@@ -52,12 +59,30 @@ int PovWriter::writeBoard(GoBoard *_board, char *_filename)
   fprintf(fp, "#declare bs = object { stone pigment {color rgb<0,0,0>} scale <ssize, ssize, ssize> finish {phong 0.2 phong_size 0.8} }\n");
   fprintf(fp, "#declare ws = object { stone pigment {color rgb<1,1,1>} scale <ssize, ssize, ssize> finish {phong 1 phong_size 150} }\n");
   
-  fprintf(fp, "#declare hline = object { box{<-%f,0,-th> <%f,bh,+th>} }\n",
+  fprintf(fp, "#declare hline = object { box{<-%f,0,-th> <+%f,bh,+th>} }\n",
 	  width/2, width/2);
-  fprintf(fp, "#declare vline = object { box{<-th,0,-%f> <+th,bh,%f>} }\n",
+  fprintf(fp, "#declare vline = object { box{<-th,0,-%f> <+th,bh,+%f>} }\n",
 	  width/2, width/2);
-  fprintf(fp, "#declare hoshi = object { cylinder{<0,0,0><0,bh,0> th*3} }");
+  fprintf(fp, "#declare hoshi = object { cylinder{<0,0,0><0,bh,0> th*5} }");
   fprintf(fp,"\n");
+
+  fprintf(fp, "#declare hoshis = union {\n");
+  if (_board->getSize() >= 19)
+    {
+      fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*- 3-s_off, s_step* 3+s_off);
+      fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*- 9-s_off, s_step* 3+s_off);
+      fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*-15-s_off, s_step* 3+s_off);
+
+      fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*- 3-s_off, s_step* 9+s_off);
+      fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*- 9-s_off, s_step* 9+s_off);
+      fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*-15-s_off, s_step* 9+s_off);
+
+      fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*- 3-s_off, s_step*15+s_off);
+      fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*- 9-s_off, s_step*15+s_off);
+      fprintf(fp, " object {hoshi translate<%f,0,%f>}\n", s_step*-15-s_off, s_step*15+s_off);
+    }
+  fprintf(fp, "}\n");
+  fprintf(fp, "\n");
 
   fprintf(fp, "#declare stones = union {\n");
   for (i=0; i<_board->getSize(); i++)
@@ -67,9 +92,9 @@ int PovWriter::writeBoard(GoBoard *_board, char *_filename)
 	  color=_board->get(i,j);
 	  if (color==empty) continue;
 	  if (color==white)
-	    fprintf(fp, "object {ws translate <%f,bh+sheight,%f>}\n", s_step*i+s_off, s_step*j+s_off);
+	    fprintf(fp, "object {ws translate <%f,bh+sheight/2,%f>}\n", s_step*-i-s_off, s_step*j+s_off);
 	  if (color==black)
-	    fprintf(fp, "object {bs translate <%f,bh+sheight,%f>}\n", s_step*i+s_off, s_step*j+s_off);
+	    fprintf(fp, "object {bs translate <%f,bh+sheight/2,%f>}\n", s_step*-i-s_off, s_step*j+s_off);
 	}
     }
   fprintf(fp, "}\n\n");
@@ -77,10 +102,10 @@ int PovWriter::writeBoard(GoBoard *_board, char *_filename)
   fprintf(fp, "#declare grid = object {union {\n");
   for (i=0; i<_board->getSize(); i++)
     {
-      fprintf(fp, "object {vline translate <%f-th,0,0>} object {hline translate <0,0,%f-th>}\n",
-	      s_off+i*s_step,s_off+i*s_step);
+      fprintf(fp, "object {vline translate <%f,0,0>}\n object {hline translate <0,0,%f>}\n",
+	      s_step*-i-s_off, s_step*i+s_off);
     }
-  fprintf(fp, "object {hoshi}\n");
+  fprintf(fp, "object {hoshis}\n");
   fprintf(fp, "}\npigment {color rgb <0.5,0.5,0.5>}}\n");
   fprintf(fp, "\n");
   fprintf(fp, "#declare woodboard=object {\n difference {\n");
@@ -94,7 +119,8 @@ int PovWriter::writeBoard(GoBoard *_board, char *_filename)
   fprintf(fp, "object { stones}\n");
   fprintf(fp, "object { board}\n");
   fprintf(fp, "\n");
-  fprintf(fp, "camera { location <1,2,-1> look_at <0,-bh,0>}\n");
+  //fprintf(fp, "camera { location <1,2,1> look_at <0,-bh,0>}\n");
+  fprintf(fp, "camera { location <0,2,.5> look_at <0,0,0>}\n");
   fprintf(fp, "light_source {<2,5,2> color rgb <1,1,1>}\n");
   fprintf(fp, "background { color rgb <0.2, 0.2, 0.3> }\n");
   fclose(fp);

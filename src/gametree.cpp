@@ -4,11 +4,7 @@
 
 GameTree::GameTree()
 {
-  m_nodes=NULL;
-  nof_nodes=0;
-
-  m_variations=NULL;
-  nof_variations=0;
+  size=0;
 }
 
 
@@ -16,14 +12,11 @@ GameTree::~GameTree()
 {
   int i;
 
-  for (i=0; i<nof_nodes; i++)
+  for (i=0; i<(int)m_nodes.size(); i++)
     free(m_nodes[i]);
 
-  for (i=0; i<nof_variations; i++)
+  for (i=0; i<(int)m_variations.size(); i++)
     free(m_variations[i]);
-
-  free(m_nodes);
-  free(m_variations);
 }
 
 
@@ -47,20 +40,14 @@ GameTree *GameTree::New()
 
 int GameTree::addNode(GameNode *_node)
 {
-  GameNode **t;
-
-  nof_nodes++;
-  t=(GameNode **)realloc(m_nodes, sizeof(GameNode *) * nof_nodes);
-  if (t==NULL) {m_nodes--;return 0;}
-
-  m_nodes=t;
-  m_nodes[nof_nodes-1]=_node;
+  if (_node==NULL) return 0;
+  m_nodes.insert(m_nodes.end(), _node);
   return 1;
 }
 
 GameNode *GameTree::getNode(int _id)
 {
-  if (_id<0 || _id>=nof_nodes)
+  if (_id<0 || _id>=(int)m_nodes.size())
     return NULL;
   return m_nodes[_id];
 }
@@ -68,20 +55,24 @@ GameNode *GameTree::getNode(int _id)
 
 int GameTree::addVariation(GameTree *_tree)
 {
-  GameTree **t;
-
-  nof_variations++;
-  t=(GameTree **)realloc(m_variations, sizeof(GameTree *) * nof_variations);
-  if (t==NULL) {m_variations--;return 0;}
-
-  m_variations=t;
-  m_variations[nof_variations-1]=_tree;
+  if (_tree==NULL) return 0;
+  m_variations.insert(m_variations.end(), _tree);
   return 1;
 }
 
 GameTree *GameTree::getVariation(int _id)
 {
-  if (_id<0 || _id>=nof_variations)
+  if (_id<0 || _id>=(int)m_variations.size())
     return NULL;
   return m_variations[_id];
+}
+
+void GameTree::print(FILE *_fp)
+{
+  int i;
+  fprintf(_fp," Printing %i nodes, %i variations\n", m_nodes.size(), m_variations.size());
+  for (i=0; i<(int)m_nodes.size(); i++)
+    m_nodes[i]->print(_fp);
+  for (i=0; i<(int)m_variations.size(); i++)
+    m_variations[i]->print(_fp);
 }

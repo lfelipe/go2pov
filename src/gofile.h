@@ -1,18 +1,16 @@
 #ifndef __GOFILE_H__
 #define __GOFILE_H__
 
+#include <vector>
 #include "gametree.h"
 #include "gameinfo.h"
-
-//#include <vector>
-//using namespace std;
 
 /** This is a collection of all games within a GO-file.
     If there are more than one games stored (possible in SGF)
     this object will have the number and the pointers to them.
     @author Hans-Peter Jacobs, last change : $Author: weasel75 $
-    @date March 2001, last change: $Date: 2001/03/14 11:20:17 $
-    @version $Revision: 1.1 $
+    @date March 2001, last change: $Date: 2001/03/20 01:45:01 $
+    @version $Revision: 1.2 $
 */
 class GoFile
 {
@@ -20,18 +18,14 @@ class GoFile
   GoFile();
   ~GoFile();
 
-  int getNumberGames() {return nof_games;}
+  int getNumberGames() {return (int)m_trees.size();}
   GameTree *getGame(int _id);
   GameInfo *getGameInfo(int _id);
 
-  int addGame(GameTree *_tree, GameInfo *_info);
+  int addGame(GameTree *_tree);
 
  private:
-  GameInfo **m_infos;
-  GameTree **m_trees;
-  int        nof_games;
-
-  //vector<GameInfo *>infos;
+  vector<GameTree*> m_trees;
 };
 
 #endif

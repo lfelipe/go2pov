@@ -13,11 +13,13 @@ class PovWriter : public BoardWriter
   const char *getName() {return (const char *) m_name;}
   const char *getExtension() {return (const char *) m_extension;}
 
+  void setFilename(char *_filename);
   void setExtension(char *_extension);
-  int  writeBoard(GoBoard *_board, char *_filename);
+
+  int  writeBoard(GoBoard *_board);
 
  private:
-  char  *m_name, *m_extension;
+  char  *m_name, *m_filename, *m_extension;
   float  m_thickness, m_boardheight;
 };
 

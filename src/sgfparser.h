@@ -10,8 +10,8 @@
     GameInfo contains informations about players, date,
     event, boardsize, etc..
     @author Hans-Peter Jacobs, last change : $Author: weasel75 $
-    @date March 2001, last change: $Date: 2001/03/19 02:05:30 $
-    @version $Revision: 1.2 $
+    @date March 2001, last change: $Date: 2001/03/20 01:45:01 $
+    @version $Revision: 1.3 $
 */
 class SGFParser : public GoParser
 {
@@ -31,6 +31,7 @@ class SGFParser : public GoParser
   int       evalProperty(GameNode *_n, char *_id, char *_v);
   char     *name;
   GameInfo *m_info;
+  GameTree *root;
 };
 
 #endif

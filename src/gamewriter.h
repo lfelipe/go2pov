@@ -9,6 +9,8 @@ class GameWriter
 {
  public:
   virtual writeGame(GameTree *_tree) = 0;
+  virtual const char *getExtension() = 0;
+  virtual setFilename(char *_name) = 0;
 };
 
 
