@@ -4,6 +4,10 @@
 #include "povwriter.h"
 #include "consoleviewer.h"
 
+#ifndef GO2POV_MAIN_VERSION
+#define GO2POV_MAIN_VERSION "cvs $Revision: 1.6 $"
+#endif
+
 void printUsage(char *_comline)
 {
   char *a=strrchr(_comline, '/');
@@ -39,8 +43,7 @@ int main(int _argc, char *_argv[])
   // parsed a game ?
   if (file->getNumberGames())
     {
-      writer.setFilename("board");
-      writer.setExtension("inc");
+      //writer.setFilename("board");writer.setExtension("inc");
       viewer.viewGame(file->getGame(0), &writer);
     }
 

@@ -44,13 +44,11 @@ LIBS    =
 # LIBS    = -lm -lpng -lz
 # -lmcheck
 # setenv MALLOC_TRACE mtrace.log
+
 DO_CC   = $(CC) $(CFLAGS) $(HP_DEBUG) $(DEFINES) $(INCLUDE) -o $@ -c $< 
+.SUFFIXES: .cpp
 
-
-# PHONY: .cpp
 .cpp.o:
-	$(DO_CC)
-.c.o:
 	$(DO_CC)
 
 all: $(TARGET) $(SOURCES)
@@ -63,7 +61,7 @@ clean:
 
 tidy:
 	rm -f $(OBJECTS) $(TARGET) *~ core mtrace.log
-	rm -f *.png
+	rm -f *.png *.inc
 
 test: $(TARGET)
 	./$(TARGET) ../samples/kitani.sgf

@@ -8,10 +8,12 @@
     this class just need to write a board-position,
     without the knowledge of the whole game.
 @author Hans-Peter Jacobs, last change: $Author: weasel75 $
-@date March 2001, last change: $Date: 2001/03/20 01:45:01 $ */
+@date March 2001, last change: $Date: 2001/03/20 16:23:08 $ */
 class BoardWriter
 {
  public:
+  virtual ~BoardWriter() {};
+
   /** Returns the name of the writer.*/
   virtual const char *getName() = 0;
 

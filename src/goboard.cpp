@@ -56,7 +56,7 @@ int GoBoard::delStone(int _x, int _y)
 
 int GoBoard::getLiberties(int _x, int _y)
 {
-  int          x,y,count, done,i;
+  int          x,y,count, done;
   stack<int>   stx;
   stack<int>   sty;
   GoBoard      tb;

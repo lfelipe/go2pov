@@ -9,6 +9,7 @@ class PovWriter : public BoardWriter
 {
  public:
   PovWriter();
+  ~PovWriter();
 
   const char *getName() {return (const char *) m_name;}
   const char *getExtension() {return (const char *) m_extension;}
@@ -19,7 +20,12 @@ class PovWriter : public BoardWriter
   int  writeBoard(GoBoard *_board);
 
  private:
+  int    writeTexture();
+  int    writeScene();
+
   char  *m_name, *m_filename, *m_extension;
+  char  *m_texturefile;
+  char  *m_goboardfile;
   float  m_thickness, m_boardheight;
 };
 
