@@ -1,0 +1,24 @@
+TODO-list
+*********
+
+Prog: go2pov
+home: http://go2pov.sourceforge.net
+auth: Jacobs, Hans-Peter <weasel75@sourceforge.net>
+date: $Date: 2001/03/14 11:20:16 $
+
+Some defines within this document:
+
++ difficult
+= moderate effort
+- easy to implement
+
+! very important
+? is it really necessary ?
+N maybe this is comming up within in the next versions
+
+
+********** here the TODO-list starts ***********
+
+
+
+********** here the TODO-list ends *************

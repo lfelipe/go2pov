@@ -1,0 +1,29 @@
+Frequently Asked Questions
+**************************
+
+Prog: go2pov
+home: http://go2pov.sourceforge.net
+auth: Jacobs, Hans-Peter <weasel75@sourceforge.net>
+date: $Date: 2001/03/14 11:20:13 $
+
+Contents
+********
+
+1. What is it good for ?
+2. What is it not good for ?
+3. What do I need to run the program ?
+
+Q: 1. What is this program good for ?
+A: The program will help you to make POV-files out of your Go-games. This
+POV-files can be raytraced directly or you can use them in your POV-projects.
+So POV can render/raytrace a picture of any resolution.
+
+Q: 2. What is it not good for ?
+A: The program will allow you to step thrue your Go-game, and to decide at
+a specific point to write the current board to the hard-disk. All other
+tasks should be done with other tools/progs/applications.
+
+Q: 3. What do I need to run the program ?
+A: In the moment the program is console-based so you need just a terminal
+or a MS-DOS-Box. To raytrace the resulting files, you need POV
+(http://www.povray.org)
