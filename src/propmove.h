@@ -7,7 +7,7 @@
 /** A move in GO is done by putting a stone at a specific
     position. The position is adressed by x,y-coords (regular size 19x19)
     $Author: weasel75 $ (last change), Hans-Peter Jacobs
-    $Data$ (last change), March 2001
+    $Date: 2001/03/25 01:38:44 $ (last change), March 2001
 */
 class PropMove : public NodeProperty
 {

@@ -1,0 +1,59 @@
+CALLMAKE= gmake -f make.win
+CALLDEL = rm
+
+#
+#
+# NO NEED TO TOUCH ANYTHING BELOW
+TARGET  =  go2pov.exe
+OBJECTS =	consoleviewer.o\
+		gameinfo.o\
+		gamenode.o\
+		gametree.o\
+		goboard.o\
+		gofile.o\
+		main.o\
+		parser.o\
+		povwriter.o\
+		propintvalue.o\
+		propmove.o\
+		propstring.o\
+		sgfparser.o
+
+SOURCES=	boardwriter.h\
+		consoleviewer.h consoleviewer.cpp\
+		gameinfo.h gameinfo.cpp\
+		gamenode.h gamenode.cpp\
+		gametree.h gametree.cpp\
+		gameviewer.h\
+		goboard.h goboard.cpp\
+		gofile.h gofile.cpp\
+		main.cpp\
+		nodeproperty.h\
+		parser.h parser.cpp\
+		povwriter.h povwriter.cpp\
+		propintvalue.h propintvalue.cpp\
+		propmove.h propmove.cpp\
+		propstring.h propstring.cpp\
+		sgfparser.h sgfparser.cpp
+
+CFLAGS  = -Wall -g3 -pedantic
+HP_DEBUG= -DGNU_C -D__WIN32__ -DGO2POV_MAIN_VERSION='"$(VERSION)"'
+LIBS	= -lstdc++
+# -lm
+DO_CC   = gcc $(CFLAGS) $(HP_DEBUG) -O6 -o $@ -c $<
+
+.SUFFIXES: .cpp
+.cpp.o:
+	$(DO_CC)
+
+all: $(TARGET)
+$(TARGET): $(OBJECTS) $(SOURCES)
+	gcc -Wall -g $(OBJECTS) -o $(TARGET) $(CFLAGS) $(LIBS)
+	cp $(TARGET) ..
+
+clean:
+	$(CALLDEL) -f $(TARGET) $(OBJECTS) mtrace.log
+
+tidy:
+	$(CALLDEL) -f $(TARGET) $(OBJECTS) mtrace.log
+	$(CALLDEL) -f *~

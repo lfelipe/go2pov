@@ -1,4 +1,5 @@
 #include "consoleviewer.h"
+#include "propadd.h"
 #include "propintvalue.h"
 #include "propmove.h"
 #include "propstring.h"
@@ -13,11 +14,13 @@ int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer)
   GoBoard       board;
   GameNode     *node;
   NodeProperty *prop;
+  PropAdd      *pa;
   GameTree     *tree;
   Stone         c;
   int           i, j, done, x,y;
   char          a, *s;
   
+  //_tree->print(stderr); getchar();
   board.setSize(19);
   if (_tree->getNumberNodes()<1)
     {
@@ -30,8 +33,12 @@ int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer)
   for(i=0; i<node->getNumberProperties(); i++)
     {
       prop=node->getProperty(i);
-      if (strcmp("boardsize",prop->getName())==0)
-	board.setSize(((PropIntValue*)prop)->getValue());
+      s=(char *)prop->getName();
+      if (strcmp("boardsize",s)==0)
+	{
+	  fprintf(stderr, "BoardSize\n");
+	  board.setSize(((PropIntValue*)prop)->getValue());
+	}
     }
 
   
@@ -43,20 +50,37 @@ int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer)
   while(!done)
     {
 
+      // if no more properties, check variations .. if no variations -> end of game
       while (i >= tree->getNumberNodes())
 	{
 	  i=0;
-	  j=tree->getNumberVariations();
-	  if (j<1)
+	  if (tree->getNumberVariations() < 1);
 	    {done=1; break;}
 	  tree=tree->getVariation(0);
 	}
       if (done) break;
 
       node=tree->getNode(i);
+      //fprintf(stderr, "%i properties\n", node->getNumberProperties());
       for(j=0; j < node->getNumberProperties(); j++)
 	{
 	  prop=node->getProperty(j);
+
+	  if (strcmp("add", prop->getName()) == 0)
+	    {
+	      pa=(PropAdd *)prop;
+	      c=pa->getColor();
+	      fprintf(stderr, "adding %i stones: ", pa->getNumberStones());
+	      for (j=0; j<pa->getNumberStones(); j++)
+		{
+		  pa->getStone(j, &x,&y);
+		  board.addStone(c,x,y);
+		  fprintf(stderr, "%i,%i ",x,y);
+		}
+	      fprintf(stderr, "\n");
+	      continue;
+	    }
+
 	  if (strcmp("move",prop->getName())==0)
 	    {
 	      c=((PropMove *)prop)->get(&x, &y);
@@ -92,11 +116,13 @@ int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer)
 		      board.removeGroup(x,y);
 		    }
 		}
+	      continue;
 	    }
 	  if (strcmp("comment",prop->getName())==0)
 	    {
 	      s=(char *)((PropString *)prop)->get();
 	      fprintf(stderr, "Comment :\n%s\n", s);
+	      continue;
 	    }
 	}
       board.print(stdout);

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sgfparser.h"
+#include "propadd.h"
 #include "propintvalue.h"
 #include "propmove.h"
 #include "propstring.h"
@@ -241,6 +242,45 @@ int SGFParser::parseProperty(char **_p1, char *_pe, char *_id, GameNode *_n)
   return 1;
 }
 
+int SGFParser::addStone(GameNode *_n, Stone _t, char *_s, bool _move)
+{
+  char     done=0;
+  char    *a=_s, *b;
+  int      x,y;
+  PropAdd *pa;
+  pa=new PropAdd(_t);
+  fprintf(stderr, "new stone-list : ");
+  while (!done && *a!=0)
+    {
+      if (*a=='[')
+	{
+	  b=strchr(a,']');
+	  if (b==NULL){done=1; break;}
+	  if (b==a+1)
+	    {
+	      x=root->size;
+	      y=root->size;
+	    } else {
+	      if (a[1] <= 'Z' && a[1]>='A')
+		x=a[1]-'A' + 26;
+	      else
+		x=a[1]-'a';
+	      if (a[2] <= 'Z' && a[2]>='A')
+		y=a[2]-'A' + 26;
+	      else
+		y=a[2]-'a';
+	      a=b;
+	    }
+	  pa->add(x, y, _move);
+	  fprintf(stderr, "%i,%i ", x,y);
+	}
+      a++;
+    }
+  _n->addProperty(pa);
+  fprintf(stderr,"\n");
+  return 0;
+}
+
 int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
 {
   PropIntValue *pi;
@@ -248,6 +288,7 @@ int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
   PropString   *ps;
   int           x,y;
 
+  fprintf(stderr, "check: %s -> %s\n", _id, _s);
   switch (_id[0])
     {
     case 'A':
@@ -255,12 +296,15 @@ int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
 	{
 	case 'B':
 	  fprintf(stderr, "Add black -> %s\n", _s);
+	  addStone(_n, black, _s, false);
 	  return 1;
 	case 'E':
 	  fprintf(stderr, "Remove Stones -> %s\n", _s);
+	  addStone(_n, empty, _s, false);
 	  return 1;
 	case 'W':
 	  fprintf(stderr, "Add white -> %s\n", _s);
+	  addStone(_n, white, _s, false);
 	  return 1;
 	default:
 	  return 0;

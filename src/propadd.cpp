@@ -5,6 +5,7 @@
 PropAdd::PropAdd(Stone _c)
 {
   m_color=_c;
+  m_move = 1;
 }
 
 PropAdd::~PropAdd()
@@ -17,17 +18,17 @@ int PropAdd::reset()
 {
   free(m_ret);
   m_ret=NULL;
-
-  
-  /*  x.free(x.begin(), x.end());
-  y.free(y.begin(), y.end());*/
+ 
+  x.erase(x.begin(), x.end());
+  y.erase(y.begin(), y.end());
   return 1;
 }
 
-int PropAdd::add(int _x, int _y)
+int PropAdd::add(int _x, int _y, bool _move)
 {
   x.insert(x.end(),_x);
   y.insert(y.end(),_y);
+  m_move=_move;
   return 1;
 }
 

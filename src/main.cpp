@@ -5,7 +5,7 @@
 #include "consoleviewer.h"
 
 #ifndef GO2POV_MAIN_VERSION
-#define GO2POV_MAIN_VERSION "cvs $Revision: 1.7 $"
+#define GO2POV_MAIN_VERSION "cvs $Revision: 1.8 $"
 #endif
 
 void printUsage(char *_comline)
@@ -23,7 +23,7 @@ int main(int _argc, char *_argv[])
   ConsoleViewer  viewer;
   PovWriter      writer;
 
-  fprintf(stderr, "go2pov ($Revision: 1.7 $)\n");
+  fprintf(stderr, "go2pov (%s)\n", GO2POV_MAIN_VERSION);
   if (_argc < 2)
     {
       printUsage(_argv[0]);

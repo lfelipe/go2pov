@@ -31,8 +31,10 @@ NodeProperty *GameNode::getProperty(int _id)
 void GameNode::print(FILE *_fp)
 {
   int i;
+  fprintf(_fp, "NODE_start\n");
   for (i=0; i<(int)props.size(); i++)
     {
-      fprintf(_fp, "%s\n", props[i]->getAsString());
+      fprintf(_fp, "    %s\n", props[i]->getAsString());
     }
+  fprintf(_fp, "NODE_end\n");
 }

@@ -1,0 +1,37 @@
+VERSION = 0.1w
+
+#
+# YOU DONT NEED TO TOUCH ANYTHING BELO
+#
+CALLMAKE=  gmake -f make.win
+CALLDEL =  rm
+TARGET  =  go2pov
+TARGETF =  $(TARGET).exe
+DATE    =  `date +%Y%m%d_%H%M`
+
+WINARCHIVE    = make.win docs/*.* samples/*.pov samples/*.inc
+WINSRCARCHIVE =	$(WINARCHIVE) src/*.cpp src/*.h
+
+export VERSION
+
+all: $(TARGETF)
+$(TARGETF):
+	@cd src && $(CALLMAKE)
+	cp src/$(TARGETF) .
+	strip $(TARGETF)
+
+clean:
+	@cd src && $(CALLMAKE) clean
+	$(CALLDEL) $(TARGETF)
+
+tidy:
+	@cd src && $(CALLMAKE) tidy
+	$(CALLDEL) -f $(TARGETF) docs/*~
+	$(CALLDEL) -r docs/autodoc.html
+
+winarchive:
+	$(CALLMAKE) tidy
+	zip -9 -r $(TARGET)_$(VERSION).zip $(WINARCHIVE)
+
+winsrcarchive:
+	zip -9 -r $(TARGET)_src_$(VERSION).zip $(WINSRCARCHIVE)

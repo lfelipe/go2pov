@@ -2,7 +2,7 @@
 # YOU DONT NEED TO TOUCH ANYTHING BELOW
 #
 BASE   = $(shell basename `pwd`)
-VERSION= 0.1
+VERSION= 0.2
 TARGET = go2pov
 DATE   = $(shell date +%Y%m%d_%H%M)
 DIRNAME= $(BASE)-$(VERSION)
