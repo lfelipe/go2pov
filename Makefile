@@ -10,6 +10,7 @@ ARCHIVE= docs/AUTHOR docs/BUGS docs/Doxyfile\
 		docs/FAQ docs/GPL docs/HOWTO docs/INSTALL\
 		docs/TODO docs/VERSION\
 		src/*.cpp src/*.h src/Makefile\
+		samples/*.pov samples/*.inc\
 		Makefile
 
 export VERSION
@@ -38,3 +39,6 @@ archive: tidy
 	rm MANIFEST
 
 release: archive
+
+test:$(TARGET)
+	cd src && make test

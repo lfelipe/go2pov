@@ -4,7 +4,7 @@ Installation-Guide for go2pov
 Prog: go2pov
 home: http://go2pov.sourceforge.net
 auth: Jacobs, Hans-Peter <weasel75@sourceforge.net>
-date: $Date: 2001/03/20 16:23:44 $
+date: $Date: 2001/03/21 01:31:55 $
 
 
 Contents
@@ -12,21 +12,17 @@ Contents
 	Linux/Unix
 	Windoze
 
-Since the prog is written in very pure C++, it *should* run on any
+Since the prog is written in C++, it *should* run on any
 plattform :-) (yes, AMIGA too). Nevertheless, I just test it for the
-Linux and Win-plattform, so if you encounter any probs, I will try to
-help.
+Linux. If you encounter any probs, I will try to help.
 
+Please take also a look at the pov-scene in the samples-directory.
 
 
 Linux/Unix:
 	untar/unzip
-	compile
-	copy the resulting executable to your favourite bin-path
+	go into the go2pov-directory
+	type "make" (if x-povray in path and "ee", try "make test" instead)
+	if successfull, copy the resulting executable to your favourite bin-path
 
-Windoze:
-	An executable file is within the windows-release, so there
-	is no need to recompile it.
-
-	Simply unzip all the stuff to a directory of your choice,
-	run the prog from a DOS-Box to see all command-line-switches.
+Windoze - not tested yet

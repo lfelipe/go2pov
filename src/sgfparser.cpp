@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sgfparser.h"
-#include "propcomment.h"
 #include "propintvalue.h"
 #include "propmove.h"
 #include "propstring.h"
@@ -244,7 +243,6 @@ int SGFParser::parseProperty(char **_p1, char *_pe, char *_id, GameNode *_n)
 
 int SGFParser::evalProperty(GameNode *_n, char *_id, char *_s)
 {
-  PropComment  *pc;
   PropIntValue *pi;
   PropMove     *pm;
   PropString   *ps;

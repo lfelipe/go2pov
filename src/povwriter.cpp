@@ -85,9 +85,9 @@ int PovWriter::writeScene()
   fprintf(fp, "// Sample scene from Go2POV (version %s)\n",\
 	  GO2POV_MAIN_VERSION);
   fprintf(fp, "#include \"%s\"\n\n", m_goboardfile);
-  fprintf(fp, "object { board}\n");
+  fprintf(fp, "object {goboard}\n");
   fprintf(fp, "\n");
-  fprintf(fp, "camera { location <4,3,.5> look_at <0,0,0>}\n");
+  fprintf(fp, "camera { location <0.5,3,2> look_at <0,0,0>}\n");
   fprintf(fp, "light_source {<2,5,2> color rgb <1,1,1>}\n");
   fprintf(fp, "background { color rgb <0.2, 0.2, 0.3> }\n");
   fclose(fp);
@@ -181,7 +181,7 @@ int PovWriter::writeBoard(GoBoard *_board)
   fprintf(fp, "pigment{wood_pigment} finish{wood_finish}\n");
   fprintf(fp, "}\n");
   fprintf(fp, "\n");
-  fprintf(fp, "#declare board = union { object{woodboard} object{grid} object{stones}}\n");
+  fprintf(fp, "#declare goboard = union { object{woodboard} object{grid} object{stones}}\n");
 
   writeScene();
   fclose(fp);

@@ -10,7 +10,6 @@ OBJECTS =	gameinfo.o gamenode.o\
 		main.o parser.o\
 		povwriter.o\
 		propadd.o\
-		propcomment.o\
 		propintvalue.o\
 		propmove.o\
 		propstring.o\
@@ -29,7 +28,6 @@ SOURCES =	boardwriter.h\
 		parser.h parser.cpp\
 		povwriter.h povwriter.cpp\
 		propadd.h propadd.cpp\
-		propcomment.h propcomment.cpp\
 		propintvalue.h propintvalue.cpp\
 		propmove.h propmove.cpp\
 		propstring.h propstring.cpp\
@@ -65,5 +63,5 @@ tidy:
 
 test: $(TARGET)
 	./$(TARGET) ../samples/kitani.sgf
-	x-povray -Isample.pov +W640 +H480 -A0.3
+	x-povray -Isample.pov +W640 +H480 -A0.3 +V
 	ee sample.png
