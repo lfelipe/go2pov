@@ -9,7 +9,7 @@ class ConsoleViewer
  public:
   ConsoleViewer();
 
-  int viewGame(GameTree *_game, BoardWriter *_writer);
+  int viewGame(GameTree *_game, BoardWriter *_writer, int steps);
 
  private:
   GoBoard *m_board;

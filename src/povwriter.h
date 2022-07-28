@@ -18,6 +18,7 @@ class PovWriter : public BoardWriter
   void setExtension(char *_extension);
 
   int  writeBoard(GoBoard *_board);
+  int  writeBoardStatus(GoBoard *_board);
 
  private:
   int    writeTexture();
@@ -26,6 +27,7 @@ class PovWriter : public BoardWriter
   char  *m_name, *m_filename, *m_extension;
   char  *m_texturefile;
   char  *m_goboardfile;
+  char  *m_goboardstatusfile;
   float  m_thickness, m_boardheight;
 };
 

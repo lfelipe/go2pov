@@ -9,7 +9,7 @@ ConsoleViewer::ConsoleViewer()
   m_board=NULL;
 }
 
-int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer)
+int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer, int steps)
 {
   GoBoard       board;
   GameNode     *node;
@@ -19,7 +19,10 @@ int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer)
   Stone         c;
   int           i, j, done, x,y;
   char          a, *s;
+  bool		limited_steps = false;
   
+
+  if (steps > 0) limited_steps = true;
   //_tree->print(stderr); getchar();
   board.setSize(19);
   if (_tree->getNumberNodes()<1)
@@ -126,6 +129,17 @@ int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer)
 	    }
 	}
       board.print(stdout);
+      if (limited_steps) {
+	      if (steps) {
+		      steps--;
+		      i++;
+		      continue;
+	      } else {
+		      _writer->writeBoard(&board);fprintf(stderr, "Saving...\n");
+		      _writer->writeBoardStatus(&board);
+		      return 1;
+	      }
+      }
       a=getchar();
       if (a=='q') {done=1;}
       if (a=='s') {_writer->writeBoard(&board);fprintf(stderr, "Saving...\n");}

@@ -15,7 +15,7 @@
 class GameViewer
 {
  public:
-  virtual int viewGame(GameTree *_game, BoardWriter *_writer) = 0;
+  virtual int viewGame(GameTree *_game, BoardWriter *_writer, int steps) = 0;
 };
 
 #endif

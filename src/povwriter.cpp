@@ -9,6 +9,7 @@ PovWriter::PovWriter()
   m_extension=strdup("pov");
   m_texturefile=strdup("gotexture.inc");
   m_goboardfile=strdup("goboard.inc");
+  m_goboardstatusfile=strdup("sample.txt");
 
   m_thickness  =0.004;
   m_boardheight=0.1;
@@ -184,6 +185,37 @@ int PovWriter::writeBoard(GoBoard *_board)
   fprintf(fp, "#declare goboard = union { object{woodboard} object{grid} object{stones}}\n");
 
   writeScene();
+  fclose(fp);
+  return 1;
+}
+
+int PovWriter::writeBoardStatus(GoBoard *_board)
+{
+  FILE   *fp;
+  int     i,j;
+  Stone   color;
+
+  fp=fopen(m_goboardstatusfile, "wt");
+  if (fp==NULL)
+    {
+      fprintf(stderr,"failed to open : %s\n", m_goboardstatusfile);
+      return 0;
+    }
+
+  for (i=0; i<_board->getSize(); i++)
+    {
+      for (j=0; j<_board->getSize(); j++)
+	{
+	  color=_board->get(i,j);
+	  if (color==empty)
+	    fprintf(fp, "-");
+	  if (color==white)
+	    fprintf(fp, "w");
+	  if (color==black)
+	    fprintf(fp, "b");
+	}
+    }
+  fprintf(fp, "\n");
   fclose(fp);
   return 1;
 }

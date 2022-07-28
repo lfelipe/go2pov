@@ -36,6 +36,11 @@ class BoardWriter
       @param _filename filename without the "." and the extension
       @return "1" on success, "0" else*/
   virtual int writeBoard(GoBoard *_board) = 0;
+
+  /** Writes a goboard status into a file.
+      @param _board pointer to a GoBoard
+      @return "1" on success, "0" else*/
+  virtual int writeBoardStatus(GoBoard *_board) = 0;
 };
 
 #endif

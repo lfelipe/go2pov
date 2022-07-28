@@ -1,5 +1,7 @@
 go2pov
 /goboard.inc
 /gotexture.inc
-sample.pov
-sample.png
+/sample.pov
+/sample.png
+/sample.txt
+*.swp
