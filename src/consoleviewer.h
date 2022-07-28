@@ -1,6 +1,7 @@
 #ifndef __CONSOLE_VIEWER_H__
 #define __CONSOLE_VIEWER_H__
 
+#include <string.h>
 #include "gameviewer.h"
 
 class ConsoleViewer

@@ -57,8 +57,8 @@ int GoBoard::delStone(int _x, int _y)
 int GoBoard::getLiberties(int _x, int _y)
 {
   int          x,y,count, done;
-  stack<int>   stx;
-  stack<int>   sty;
+  std::stack<int>   stx;
+  std::stack<int>   sty;
   GoBoard      tb;
   Stone        color;
 

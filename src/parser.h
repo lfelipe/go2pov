@@ -2,7 +2,6 @@
 #define __PARSER_H__
 
 #define MAXPARSER 100
-#include <vector.h>
 #include "gofile.h"
 #include "goparser.h"
 

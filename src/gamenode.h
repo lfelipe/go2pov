@@ -5,6 +5,8 @@
 #include <vector>
 #include "nodeproperty.h"
 
+using std::vector;
+
 typedef vector<NodeProperty *> PropList;
 
 /** A node is a single move/step in a game.

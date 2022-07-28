@@ -28,8 +28,8 @@ class PropAdd : public NodeProperty
   char  *m_ret;
   Stone  m_color;
   bool   m_move;
-  vector<int> x;
-  vector<int> y;
+  std::vector<int> x;
+  std::vector<int> y;
 
 };
 
