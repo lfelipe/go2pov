@@ -4,4 +4,6 @@ go2pov
 /sample.pov
 /sample.png
 /sample.txt
+/sample-centered.pov
+/sample-centered.png
 *.swp

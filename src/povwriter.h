@@ -22,9 +22,10 @@ class PovWriter : public BoardWriter
 
  private:
   int    writeTexture();
-  int    writeScene();
+  int    writeScene(bool centered);
 
   char  *m_name, *m_filename, *m_extension;
+  char  *m_centerfilename;
   char  *m_texturefile;
   char  *m_goboardfile;
   char  *m_goboardstatusfile;

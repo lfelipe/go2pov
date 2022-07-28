@@ -6,6 +6,7 @@ PovWriter::PovWriter()
 {
   m_name=strdup("povwriter");
   m_filename=strdup("sample");
+  m_centerfilename=strdup("sample-centered");
   m_extension=strdup("pov");
   m_texturefile=strdup("gotexture.inc");
   m_goboardfile=strdup("goboard.inc");
@@ -67,13 +68,18 @@ int PovWriter::writeTexture()
   return 1;
 }
 
-int PovWriter::writeScene()
+int PovWriter::writeScene(bool centered)
 {
   FILE   *fp;
   char   *n;
 
-  n=(char *)malloc(strlen(m_filename) + strlen(m_extension) + 2);
-  sprintf(n,"%s.%s", m_filename,m_extension);
+  if (centered) {
+	  n=(char *)malloc(strlen(m_centerfilename) + strlen(m_extension) + 2);
+	  sprintf(n,"%s.%s", m_centerfilename,m_extension);
+  } else {
+	  n=(char *)malloc(strlen(m_filename) + strlen(m_extension) + 2);
+	  sprintf(n,"%s.%s", m_filename,m_extension);
+  }
   fp=fopen(n, "wt");
   if (fp==NULL)
     {
@@ -88,7 +94,10 @@ int PovWriter::writeScene()
   fprintf(fp, "#include \"%s\"\n\n", m_goboardfile);
   fprintf(fp, "object {goboard}\n");
   fprintf(fp, "\n");
-  fprintf(fp, "camera { location <0.5,3,2> look_at <0,0,0>}\n");
+  if (centered)
+	  fprintf(fp, "camera { location <0,2,0> look_at <0,0,0>}\n");
+  else
+	  fprintf(fp, "camera { location <0.5,3,2> look_at <0,0,0>}\n");
   fprintf(fp, "light_source {<2,5,2> color rgb <1,1,1>}\n");
   fprintf(fp, "background { color rgb <0.2, 0.2, 0.3> }\n");
   fclose(fp);
@@ -184,7 +193,8 @@ int PovWriter::writeBoard(GoBoard *_board)
   fprintf(fp, "\n");
   fprintf(fp, "#declare goboard = union { object{woodboard} object{grid} object{stones}}\n");
 
-  writeScene();
+  writeScene(false); // Write distant version
+  writeScene(true); // Write centered version
   fclose(fp);
   return 1;
 }
