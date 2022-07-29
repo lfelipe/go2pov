@@ -218,18 +218,19 @@ int PovWriter::writeBoardStatus(GoBoard *_board)
       return 0;
     }
 
-  for (i=0; i<_board->getSize(); i++)
+  for (j=0; j<_board->getSize(); j++)
     {
-      for (j=0; j<_board->getSize(); j++)
-	{
-	  color=_board->get(i,j);
-	  if (color==empty)
-	    fprintf(fp, "-");
-	  if (color==white)
-	    fprintf(fp, "w");
-	  if (color==black)
-	    fprintf(fp, "b");
-	}
+	    for (i=0; i<_board->getSize(); i++)
+	    {
+		    color=_board->get(i,j);
+		    if (color==empty)
+			    fprintf(fp, "-");
+		    if (color==white)
+			    fprintf(fp, "w");
+		    if (color==black)
+			    fprintf(fp, "b");
+	    }
+	    fprintf(fp, "\n");
     }
   fprintf(fp, "\n");
   fclose(fp);
