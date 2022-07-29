@@ -23,6 +23,7 @@ $(TARGET):
 
 clean:
 	cd src && $(MAKE) clean
+	rm -f *.pov *.png *.inc *.txt
 	rm -f $(TARGET) mtrace.log
 
 tidy:

@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 #include "povwriter.h"
 
 PovWriter::PovWriter()
@@ -96,8 +97,13 @@ int PovWriter::writeScene(bool centered)
   fprintf(fp, "\n");
   if (centered)
 	  fprintf(fp, "camera { location <0,2,0> look_at <0,0,0>}\n");
-  else
-	  fprintf(fp, "camera { location <0.5,3,2> look_at <0,0,0>}\n");
+  else {
+	  srand(time(NULL));
+	  float rand1 = ((float)(rand() % 10)/ 10) - 0.5 + 0.5; //number between -0.5 and 0.5 + starting default 0.5
+	  float rand2 = ((float)(rand() % 4)/ 4) - 0.2 + 3; // number between -0.2 and 0.2 + starting default 3
+	  float rand3 = ((float)(rand() % 10)/ 10) - 0.5 + 2; // number between -0.5 and 0.5 + starting default 2
+	  fprintf(fp, "camera { location <%.2f,%.2f,%.2f> look_at <0,0,0>}\n", rand1, rand2, rand3);
+  }
   fprintf(fp, "light_source {<2,5,2> color rgb <1,1,1>}\n");
   fprintf(fp, "background { color rgb <0.2, 0.2, 0.3> }\n");
   fclose(fp);
