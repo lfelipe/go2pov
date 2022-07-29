@@ -61,7 +61,13 @@ int ConsoleViewer::viewGame(GameTree *_tree, BoardWriter *_writer, int steps)
 	    {done=1; break;}
 	  tree=tree->getVariation(0);
 	}
-      if (done) break;
+      if (done) {
+	      if (limited_steps) {
+		      _writer->writeBoard(&board);fprintf(stderr, "Saving...\n");
+		      _writer->writeBoardStatus(&board);
+	      }
+	      break;
+      }
 
       node=tree->getNode(i);
       //fprintf(stderr, "%i properties\n", node->getNumberProperties());
